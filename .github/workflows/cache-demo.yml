@@ -12,6 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create cache content
+        run: mkdir -p ~/.cache/demo && echo "cached data" > ~/.cache/demo/data.txt
+
       - name: Cache dependencies
         id: cache-step
         uses: actions/cache@v4
@@ -20,10 +23,4 @@ jobs:
           key: cache-ce94b82
 
       - name: prime-cache-ce94b82
-        run: echo "Cache hit: ${{ steps.cache-step.outputs.cache-hit }}"
-
-      - name: Create cache content (if cache missed)
-        if: steps.cache-step.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p ~/.cache/demo
-          echo "cached data" > ~/.cache/demo/data.txt
+        run: "echo 'Cache hit: ${{ steps.cache-step.outputs.cache-hit }}'"
